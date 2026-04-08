@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Avaliação WebII</title>
+</head>
+<body>
+
+    <h2>Seleção de itens</h2>
+
+    <label>1. Escolha a Categoria:</label>
+    <select id="selectCategoria" onchange="atualizarItens()">
+        <option value="">-- Selecione --</option>
+        <option value="eletronicos">Eletrônicos</option>
+        <option value="papelaria">Papelaria</option>
+    </select>
+
+    <br><br>
+
+    <label>2. Escolha o Item:</label>
+    <select id="selectItem">
+        <option value="">-- Aguardando categoria --</option>
+    </select>
+
+    <h2>Cadastro de itens</h2>
+
+    <label>Descrição:</label>
+    <input type="text" id="campoTexto" placeholder="Digite algo...">
+    
+    <button onclick="enviarDados()">Enviar</button>
+
+    <hr>
+
+    <div id="painelResultados"></div>
+
+    <script>
+        function atualizarItens() {            
+            var categoria = document.getElementById("selectCategoria").value;            
+            var campoItem = document.getElementById("selectItem");
+            campoItem.innerHTML = "";
+            
+            if (categoria == "eletronicos") {
+                campoItem.innerHTML = "<option value='Mouse'>Mouse</option>" +
+                                      "<option value='Teclado'>Teclado</option>" +
+                                      "<option value='Monitor'>Monitor</option>";
+            } 
+            else if (categoria == "papelaria") {
+                campoItem.innerHTML = "<option value='Caderno'>Caderno</option>" +
+                                      "<option value='Caneta'>Caneta</option>" +
+                                      "<option value='Estojo'>Estojo</option>";
+            } 
+            else {                
+                campoItem.innerHTML = "<option value=''>-- Aguardando categoria --</option>";
+            }
+        }
+
+        function enviarDados() {            
+            var textoDigitado = document.getElementById("campoTexto").value;   
+            var painel = document.getElementById("painelResultados");
+            var novoBloco = document.createElement("div");
+            
+            novoBloco.className = "item-cadastrado";            
+            novoBloco.innerHTML = "<span>" + textoDigitado + "</span> " +
+                                  "<button onclick='remover(this)'>Excluir</button>" + 
+                                  "<button>Editar</button>";   
+
+            painel.appendChild(novoBloco);
+            document.getElementById("campoTexto").value = "";
+        }
+
+        function remover(botaoClicado) {
+            var blocoParaApagar = botaoClicado.parentElement;
+
+            blocoParaApagar.remove();
+        }
+
+        function enviarDados() {
+            var textoDigitado = document.getElementById("campoTexto").value;
+            var painel = document.getElementById("painelResultados");
+
+            if (textoDigitado == "") return;
+            var novoBloco = document.createElement("div");
+            
+            novoBloco.className = "item-cadastrado";
+            novoBloco.innerHTML = "<span>" + textoDigitado + "</span> " +
+                                  "<button onclick='remover(this)'>Excluir</button>" + 
+                                  "<button onclick='editar(this)'>Editar</button>";
+
+            painel.appendChild(novoBloco);
+            document.getElementById("campoTexto").value = "";
+        }
+
+        function editar(botaoEditar) {            
+            var bloco = botaoEditar.parentElement;
+            var textoParaEditar = bloco.querySelector("span").innerText;
+
+            document.getElementById("campoTexto").value = textoParaEditar;
+
+            bloco.remove();
+        }
+    </script>
+</body>
+</html>
